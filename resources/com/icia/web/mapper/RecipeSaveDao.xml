@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.icia.web.dao.RecipeSaveDao">
+
+<select id="recipeMaxNum" resultType="int">
+      SELECT MAX(RECIPE_CODE)
+      FROM RECIPE_INFO
+</select>
+
+<!-- 마이 레시피 등록(INFO) -->   
+<insert id="insertInfo" parameterType="com.icia.web.model.RecipeInfo">   
+INSERT INTO RECIPE_INFO (
+    RECIPE_CODE,
+    RECIPE_NAME,
+    RECIPE_QNT,
+    RECIPE_TIME,
+    NATION_CODE,
+    FOOD_CODE,
+    REG_DATE,
+    RECIPE_INTRO,
+    RECIPE_IMAGE,
+    USER_ID
+) VALUES (
+    #{recipeCode},
+    #{recipeName},
+    #{recipeQnt},
+    #{recipeTime},
+    #{nationCode},
+    #{foodCode},
+    SYSDATE,
+    #{recipeIntro},
+    #{recipeImage},
+    #{userId}
+)
+</insert>
+   
+<insert id="insertCooking" parameterType="com.icia.web.model.RecipeCooking">
+      
+      INSERT INTO RECIPE_COOKING (
+          COOKING_ORDER,
+          COOKING_IMAGE,
+          RECIPE_CODE,
+          COOKING_EXPLAN
+      ) VALUES (
+          #{cookingOrder},
+          #{cookingImage},
+          #{recipeCode},
+          #{cookingExplan}
+      )
+</insert>
+   
+<insert id="insertIrdnt" parameterType="com.icia.web.model.RecipeIrdnt">
+   INSERT INTO RECIPE_IRDNT (
+    IRDNT_AMOUNT,
+    IRDNT_NAME,
+    RECIPE_CODE,
+    IRDNT_TYPE_CODE
+   ) 
+   VALUES (
+       #{irdntAmount},
+       #{irdntName},
+       #{recipeCode},
+       #{irdntTypeCode}
+   )
+</insert>
+
+<!-- 유저 등록 레시피 삭제(INFO) -->
+<delete id="deleteInfo" parameterType="int">
+DELETE 
+  FROM RECIPE_INFO
+ WHERE RECIPE_CODE = #{recipeCode}
+</delete>
+
+<!-- 유저 등록 레시피 삭제(IRDNT) -->
+<delete id="deleteIrdnt" parameterType="int">
+DELETE 
+  FROM RECIPE_IRDNT
+ WHERE RECIPE_CODE = #{recipeCode}
+</delete>
+
+<!-- 유저 등록 레시피 삭제(COOKING) -->
+<delete id="deleteCooking" parameterType="int">
+DELETE 
+  FROM RECIPE_COOKING
+ WHERE RECIPE_CODE = #{recipeCode}
+</delete>
+   
+
+
+</mapper>
